@@ -16,12 +16,11 @@ const port = 3000;
     } catch (error) {
         next(error)
     }
-     this.response.json(getMusician);
 })
 
 
 // get a specific musician 
-app.get('/:id', async (req, res, next) => {
+app.get('/musicians/:id', async (req, res, next) => {
     try{
         const num = req.params.id
         const getMusician = await Musician.findByPk(num);
@@ -32,9 +31,7 @@ app.get('/:id', async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-     this.response.json(getMusician);
 })
-
 
 
 
