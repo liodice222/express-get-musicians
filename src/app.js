@@ -33,7 +33,48 @@ app.get('/musicians/:id', async (req, res, next) => {
     }
 })
 
+// post musicians (create new musician) 
+app.use(express.json());
+app.use(express.urlencoded());
+app.post('/musicians/:id', async(req, res, next) => {
+    try{
+        const {name, instrument} = req.body;
+        const newMuscian = await Musician.create({name, instrument});
+        res.json(newMuscian);
+    } catch (error){
+        next(error)
+    }   
+})
 
+// put (update musician and repsond w updated musician)
+app.put('/musicians/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const {name, instrument} = req.body; 
+        const updateMusician = await Musician.findByPk(id);
+        // update musician 
+        updateMusician.name = name
+        updateMusician.instrument = instrument;
+        // sequelize to udpate database
+        await updateMusician.save();
+        // send back updated musician 
+        res.json(updateMusician);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// delete musician 
+app.delete('/musician/:id', async () => {
+    try{
+    const id = req.params.id;
+    const deleteMusician = await Musician.findByPk(id);
+    await deleteMusician.destroy();
+    res.json(Musician);
+    } catch(error) {
+        next(error);
+    }
+})
 
 
 module.exports = app;
